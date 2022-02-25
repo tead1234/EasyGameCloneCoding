@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="event.css">
+</head>
+<body>
+    
+    <div>
+        <input class="input" maxlength="1">
+        <input class="input" maxlength="1">
+        <input class="input" maxlength="1">
+        <input class="input" maxlength="1">
+        <input class="input" maxlength="1">
+    </div>
+    <div>
+        <button class="submit-button">Submit</button>
+        <button class="retry-button">Retry</button>
+    </div>
+    
+<script>
+    var answer_list = ['truck','tiger','round'];
+    var answer = answer_list[Math.floor(Math.random()*answer_list.length)]
+    document.querySelector('.submit-button').addEventListener('click',function(){
+        // 위치까지 맞으면 초록색
+        // 맞추기만 하면 노랑
+        // 다틀리면 그냥 패스
+        var input_answer = document.querySelectorAll('.input')
+        var templelet = `<div>
+                <input class="input" maxlength="1">
+                <input class="input" maxlength="1">
+                <input class="input" maxlength="1">
+                <input class="input" maxlength="1">
+                <input class="input" maxlength="1">
+            </div>`;
+        
+        
+        // if(input_answer[0].value == answer[0]){
+        //     input_answer[0].style.background = 'green';
+        // }else if (answer.includes(input_answer[0].value)){
+        //     input_answer[0].style.background = 'yellow';
+        // }
+        // 위에걸 다섯번 반복하면 끝이네?
+        for (let i =0; i < 5; i ++){
+            
+            if(input_answer[i].value == answer[i]){
+            input_answer[i].style.background = 'lightgrey';
+            }else if (answer.includes(input_answer[i].value)){
+            input_answer[i].style.background = 'yellow';
+            }else{
+            input_answer[i].style.background = 'white';
+            }
+            input_answer[i].classList.remove('input');
+        }
+        //만약 정답이 맞다면 폭죽이 터지는 이벤트
+        let particles = [];
+        const colors = ["#eb6383","#fa9191","#ffe9c5","#b4f2e1"];
+        function pop () {
+        for (let i = 0; i < 150; i++) {
+            const p = document.createElement('particule');
+            p.x = window.innerWidth * 0.5;
+            p.y = window.innerHeight + (Math.random() * window.innerHeight * 0.3);
+            p.vel = {
+            x: (Math.random() - 0.5) * 10,
+            y: Math.random() * -20 - 15
+            };
+            p.mass = Math.random() * 0.2 + 0.8;
+            particles.push(p);
+            p.style.transform = `translate(${p.x}px, ${p.y}px)`;
+            const size = Math.random() * 15 + 5;
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            p.style.background = colors[Math.floor(Math.random()*colors.length)];
+            document.body.appendChild(p);
+        }
+        }
+
+        function render () {
+        for (let i = particles.length - 1; i--; i > -1) {
+            const p = particles[i];
+            p.style.transform = `translate3d(${p.x}px, ${p.y}px, 1px)`;
+            
+            p.x += p.vel.x;
+            p.y += p.vel.y;
+            
+            p.vel.y += (0.5 * p.mass);
+            if (p.y > (window.innerHeight * 2)) {
+            p.remove();
+            particles.splice(i, 1);
+            }
+        }
+        requestAnimationFrame(render);
+        }
+
+        if (input_answer[0].value+input_answer[1].value+input_answer[2].value+input_answer[3].value+input_answer[4].value == answer){
+            pop();
+            window.setTimeout(render, 100);   
+        }else{
+            document.querySelector('div').insertAdjacentHTML('beforeend',templelet);
+        }   
+    })
+    document.querySelector('.retry-button').addEventListener('click',function(){
+            location.reload();
+    })
+</script>
+</body>
+</html>
