@@ -57,3 +57,9 @@ input{
     font-size: 40px;
     text-align: center;          
 }
+.head{
+    border-radius: 5px;
+    border: 3px solid black;
+    width: 90%;
+    margin-bottom: -30px;
+}
